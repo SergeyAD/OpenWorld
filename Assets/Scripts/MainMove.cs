@@ -45,8 +45,8 @@ public class MainMove : MonoBehaviour
         var turn = _turn * speedTurn * Time.deltaTime;
 
 
-        //mainObject.transform.Translate(_move);
-        //mainObject.transform.Rotate(new Vector3(0, turn, 0));
+        mainObject.transform.Translate(_move);
+        mainObject.transform.Rotate(new Vector3(0, turn, 0));
         //Debug.LogWarning("speed = "+ _vector.z * speed + " turn = " + _turn);
         anim.SetFloat("Speed", _vector.z * speed);
         anim.SetFloat("Direction", _turn);
