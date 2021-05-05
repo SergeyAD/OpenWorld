@@ -5,10 +5,11 @@ using UnityEngine;
 public class MainMove : MonoBehaviour
 {
     public GameObject mainObject;
+    public float speedWalk;
     public float speedRun;
     public float speedTurn;
     public Animator anim;
-    public float Speed;
+    
     public GameObject lightObject;
 
 
@@ -19,6 +20,7 @@ public class MainMove : MonoBehaviour
     private Vector3 _vector;
     private float _turn;
     private bool _lamp = false;
+    public bool _isRun = false;
 
     private void Awake()
     {
@@ -29,26 +31,25 @@ public class MainMove : MonoBehaviour
     {
         _vector.z = Input.GetAxis("Vertical");
         _turn = Input.GetAxis("Horizontal");
-
+        float speed;
         // Движение игрока
+        if (_isRun)
+        {
+            speed = speedRun;
+        } else
+        {
+            speed = speedWalk;
+        }
 
-        var _move = _vector * speedRun * Time.deltaTime;
+        var _move = _vector * speed * Time.deltaTime;
         var turn = _turn * speedTurn * Time.deltaTime;
 
 
-        mainObject.transform.Translate(_move);
-        mainObject.transform.Rotate(new Vector3(0, turn, 0));
-
-        Speed = new Vector2(_turn, _vector.z).sqrMagnitude;
-        if (Speed > allowPlayerRotation)
-        {
-            anim.SetFloat("Blend", Speed, StartAnimTime, Time.deltaTime);
-            
-        }
-        else if (Speed < allowPlayerRotation)
-        {
-            anim.SetFloat("Blend", Speed, StopAnimTime, Time.deltaTime);
-        }
+        //mainObject.transform.Translate(_move);
+        //mainObject.transform.Rotate(new Vector3(0, turn, 0));
+        //Debug.LogWarning("speed = "+ _vector.z * speed + " turn = " + _turn);
+        anim.SetFloat("Speed", _vector.z * speed);
+        anim.SetFloat("Direction", _turn);
 
         //Включение / выключение фонарика
 
@@ -56,6 +57,16 @@ public class MainMove : MonoBehaviour
         {
             _lamp = !_lamp;
             lightObject.SetActive(_lamp);
+        }
+
+        // Режим бега
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            _isRun = true;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            _isRun = false;
         }
 
     }
