@@ -22,6 +22,8 @@ public class MainMove : MonoBehaviour
     private bool _lamp = false;
     public bool _isRun = false;
 
+    private bool _pouse = false;
+
     private void Awake()
     {
         lightObject.SetActive(_lamp);
@@ -68,6 +70,24 @@ public class MainMove : MonoBehaviour
         {
             _isRun = false;
         }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            _pouse = !_pouse;
+            Camera.main.GetComponent<GUIview>().pouseMenu = _pouse;
+            if (_pouse)
+            {
+                Time.timeScale = 0;
+                
+            }
+            else
+            {
+                Time.timeScale = 1;
+            }
+
+
+        }
+
 
     }
 
