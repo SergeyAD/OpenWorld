@@ -29,6 +29,23 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
 
+		[Range(0,1)]
+		[SerializeField]
+		private float _weightRightHand;
+
+		[Range(0, 1)]
+		[SerializeField]
+		private float _weightLeftHand;
+		[SerializeField]
+		private GameObject _rightHandTarget;
+		[SerializeField]
+		private GameObject _leftHandTarget;
+
+		[SerializeField]
+		private GameObject _headEthan;
+		[SerializeField]
+		private float _distanceLookAt;
+
 
 		void Start()
 		{
@@ -42,6 +59,29 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
 		}
 
+        protected void OnAnimatorIK(int layerIndex)
+        {
+			_weightRightHand = (Vector3.Dot(transform.forward, _rightHandTarget.transform.position - transform.position ) > 0) ? 1 : 0;
+			m_Animator.SetIKPosition(AvatarIKGoal.RightHand, _rightHandTarget.transform.position);
+			m_Animator.SetIKPositionWeight(AvatarIKGoal.RightHand, _weightRightHand);
+
+			_weightLeftHand = (Vector3.Dot(transform.forward, _leftHandTarget.transform.position - transform.position) > 0) ? 1 : 0;
+			m_Animator.SetIKPosition(AvatarIKGoal.LeftHand, _leftHandTarget.transform.position);
+			m_Animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, _weightLeftHand);
+
+			// поворот головы не работает... не смог добавить голову в AvatarIKGoal (((
+
+			Debug.Log(Vector3.Distance(transform.position, _leftHandTarget.transform.position));
+			if (Vector3.Distance(transform.position, _leftHandTarget.transform.position) < _distanceLookAt)
+			{
+				m_Animator.SetLookAtPosition(_leftHandTarget.transform.position);
+				m_Animator.SetLookAtWeight(_weightLeftHand);
+
+
+			}
+
+
+		}
 
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
