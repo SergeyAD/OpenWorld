@@ -69,9 +69,9 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			m_Animator.SetIKPosition(AvatarIKGoal.LeftHand, _leftHandTarget.transform.position);
 			m_Animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, _weightLeftHand);
 
-			// поворот головы не работает... не смог добавить голову в AvatarIKGoal (((
+			
 
-			Debug.Log(Vector3.Distance(transform.position, _leftHandTarget.transform.position));
+			//Debug.Log(Vector3.Distance(transform.position, _leftHandTarget.transform.position));
 			if (Vector3.Distance(transform.position, _leftHandTarget.transform.position) < _distanceLookAt)
 			{
 				m_Animator.SetLookAtPosition(_leftHandTarget.transform.position);
